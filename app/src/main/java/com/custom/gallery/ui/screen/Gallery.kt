@@ -36,7 +36,7 @@ fun GalleryScreen(navController: NavHostController, viewModel: GalleryViewModel)
 
     LaunchedEffect("") {
         viewModel.start()
-        viewModel.getBuckets()
+        viewModel.getBucketAll()
     }
 
     DisposableEffect("") {

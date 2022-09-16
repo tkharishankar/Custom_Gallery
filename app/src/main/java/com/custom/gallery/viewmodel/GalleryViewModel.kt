@@ -86,6 +86,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
     fun getBuckets() {
         val fileIdSet = mutableSetOf<String?>()
         val bucketList = mutableListOf<Bucket>()
+        val bucketHashMap: HashMap<String, Int> = HashMap()
         getApplication<Application>().contentResolver.query(
             MediaStore.Files.getContentUri("external"),
             arrayOf(
@@ -104,18 +105,17 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
             while (cursor.moveToNext()) {
                 val fileIdColumn = cursor.getColumnIndex(MediaStore.MediaColumns.BUCKET_ID)
                 val fileId = cursor.getString(fileIdColumn)
-
                 if (fileId in fileIdSet) {
+                    bucketHashMap[fileId] = bucketHashMap[fileId]!! + 1;
                     continue
                 }
+                bucketHashMap[fileId] = 1
                 fileIdSet += fileId
-
                 val idColumn = cursor.getColumnIndex(BaseColumns._ID)
                 val fileDisplayNameColumn =
                     cursor.getColumnIndex(MediaStore.MediaColumns.BUCKET_DISPLAY_NAME)
                 val mediaTypeColumn =
                     cursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE)
-
                 val id = cursor.getLong(idColumn)
                 val fileDisplayName = cursor.getString(fileDisplayNameColumn)
                 val mediaType = cursor.getInt(mediaTypeColumn)
@@ -146,7 +146,12 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
                 )
             }
         }
-        Log.i(_TAG, "size" + bucketList.size)
+
+        bucketList.map { bucket ->
+            val count = bucketHashMap[bucket.bucketId.toString()]
+            bucket.itemCount = count ?: 0
+        }
+
         bucketUIState = bucketUIState.copy(buckets = bucketList)
     }
 }
