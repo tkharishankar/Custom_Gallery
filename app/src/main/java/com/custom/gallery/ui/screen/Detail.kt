@@ -51,9 +51,9 @@ fun DetailScreen(
 
     Scaffold(
         topBar = {
-            TopBar(displayName) {
+            TopBar(displayName, onNavigationClick = {
                 navController.navigateUp()
-            }
+            })
         },
         scaffoldState = scaffoldState,
     ) { paddingValues ->
@@ -91,7 +91,6 @@ fun DetailScreen(
                                         )
                                         navController
                                             .navigate(
-
                                                 "preview/${encodedUrl}" +
                                                         "/${viewModel.fileUIState.files[index].mediaType}"
                                             )
