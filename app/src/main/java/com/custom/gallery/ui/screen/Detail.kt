@@ -5,11 +5,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -28,14 +32,13 @@ fun DetailScreen(
     navController: NavHostController,
     viewModel: GalleryViewModel,
     bucketId: String,
-    displayName: String,
-    mediaType: Int
+    displayName: String
 ) {
     val scaffoldState = rememberScaffoldState()
 
     LaunchedEffect("") {
         viewModel.start()
-        viewModel.getFiles(bucketId, mediaType)
+        viewModel.getFiles(bucketId, displayName)
     }
 
     DisposableEffect("") {
@@ -67,13 +70,27 @@ fun DetailScreen(
                             .fillMaxWidth(),
                         elevation = 8.dp,
                     ) {
-                        Image(
-                            painter = rememberImagePainter(viewModel.fileUIState.files[index].uri),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = null,
+                        Box(
                             modifier = Modifier
-                                .size(100.dp)
-                        )
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = rememberImagePainter(viewModel.fileUIState.files[index].uri),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(100.dp)
+                            )
+                            if (viewModel.fileUIState.files[index].mediaType == 3) {
+                                Icon(
+                                    imageVector = Icons.Default.PlayArrow,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(100.dp),
+                                    tint = Color.Black
+                                )
+                            }
+                        }
                     }
                 }
             }
