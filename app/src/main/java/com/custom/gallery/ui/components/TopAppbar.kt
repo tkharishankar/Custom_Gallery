@@ -60,34 +60,3 @@ fun TopBar(title: String, onNavigationClick: () -> Unit) {
         backgroundColor = Purple700
     )
 }
-
-@Composable
-fun Dropdown() {
-    var expanded by remember { mutableStateOf(false) }
-    val items = listOf("Grid", "List")
-    var selectedIndex by remember { mutableStateOf(0) }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentSize(Alignment.TopStart)
-    ) {
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    Color.Red
-                )
-        ) {
-            items.forEachIndexed { index, s ->
-                DropdownMenuItem(onClick = {
-                    selectedIndex = index
-                    expanded = false
-                }) {
-
-                }
-            }
-        }
-    }
-}
