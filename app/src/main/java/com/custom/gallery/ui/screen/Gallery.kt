@@ -88,8 +88,7 @@ fun GalleryScreen(navController: NavHostController, viewModel: GalleryViewModel)
                                         navController
                                             .navigate(
                                                 "detail/${viewModel.fileUIState.files[index].id}" +
-                                                        "/${viewModel.fileUIState.files[index].displayName}" +
-                                                        "/${viewModel.fileUIState.files[index].mediaType}"
+                                                        "/${viewModel.fileUIState.files[index].displayName}"
                                             )
                                     }
                             )

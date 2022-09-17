@@ -75,13 +75,15 @@ class GalleryViewModel @Inject constructor() : ViewModel() {
                     mimeType.contains("video") -> 3
                     else -> 0
                 }
-                files += MediaFile(
-                    id, cursor.getString(displayNameColumnIndex),
-                    ContentUris.withAppendedId(
-                        getUri(selectedMediaType),
-                        id
-                    ),
-                    mediaType,
+                files.add(
+                    MediaFile(
+                        id, cursor.getString(displayNameColumnIndex),
+                        ContentUris.withAppendedId(
+                            getUri(selectedMediaType),
+                            id
+                        ),
+                        mediaType,
+                    )
                 )
             }
         }
@@ -115,9 +117,11 @@ class GalleryViewModel @Inject constructor() : ViewModel() {
                 val fileUri = ContentUris.withAppendedId(
                     getUri(mediaType), id
                 )
-                bucketList += MediaFile(
-                    fileId.toLong(), fileDisplayName,
-                    fileUri, mediaType
+                bucketList.add(
+                    MediaFile(
+                        fileId.toLong(), fileDisplayName,
+                        fileUri, mediaType
+                    )
                 )
             }
         }
