@@ -1,6 +1,8 @@
 package com.custom.gallery.ui.screen
 
+import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -20,7 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.custom.gallery.ui.components.TopBar
 import com.custom.gallery.viewmodel.GalleryViewModel
 
@@ -78,11 +80,22 @@ fun DetailScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Image(
-                                painter = rememberImagePainter(viewModel.fileUIState.files[index].uri),
+                                painter = rememberAsyncImagePainter(viewModel.fileUIState.files[index].uri),
                                 contentScale = ContentScale.Crop,
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(100.dp)
+                                    .clickable {
+                                        val encodedUrl = Uri.encode(
+                                            viewModel.fileUIState.files[index].uri.toString()
+                                        )
+                                        navController
+                                            .navigate(
+
+                                                "preview/${encodedUrl}" +
+                                                        "/${viewModel.fileUIState.files[index].mediaType}"
+                                            )
+                                    }
                             )
                             if (viewModel.fileUIState.files[index].mediaType == 3) {
                                 Icon(
