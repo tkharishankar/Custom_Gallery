@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -60,7 +63,7 @@ fun GalleryScreen(navController: NavHostController, viewModel: GalleryViewModel)
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2)
             ) {
-                items(viewModel.bucketUIState.buckets.size) { index ->
+                items(viewModel.fileUIState.files.size) { index ->
                     Card(
                         backgroundColor = Color.White,
                         modifier = Modifier
@@ -68,21 +71,35 @@ fun GalleryScreen(navController: NavHostController, viewModel: GalleryViewModel)
                             .fillMaxWidth(),
                         elevation = 8.dp,
                     ) {
-                        Image(
-                            painter = rememberImagePainter(viewModel.bucketUIState.buckets[index].bucketUri),
-                            contentScale = ContentScale.Crop,
-                            contentDescription = null,
+                        Box(
                             modifier = Modifier
-                                .size(150.dp)
-                                .clickable {
-                                    navController
-                                        .navigate(
-                                            "detail/${viewModel.bucketUIState.buckets[index].bucketId}" +
-                                                    "/${viewModel.bucketUIState.buckets[index].displayName}" +
-                                                    "/${viewModel.bucketUIState.buckets[index].mediaType}"
-                                        )
-                                }
-                        )
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Image(
+                                painter = rememberImagePainter(viewModel.fileUIState.files[index].uri),
+                                contentScale = ContentScale.Crop,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(150.dp)
+                                    .clickable {
+                                        navController
+                                            .navigate(
+                                                "detail/${viewModel.fileUIState.files[index].id}" +
+                                                        "/${viewModel.fileUIState.files[index].displayName}" +
+                                                        "/${viewModel.fileUIState.files[index].mediaType}"
+                                            )
+                                    }
+                            )
+                            if (viewModel.fileUIState.files[index].mediaType == 3) {
+                                Icon(
+                                    imageVector = Icons.Default.PlayArrow,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(100.dp),
+                                    tint = Color.Black
+                                )
+                            }
+                        }
                         val gradientGrayWhite =
                             Brush.verticalGradient(0f to Color.Black, 1000f to Color.Transparent)
                         Box(
@@ -95,7 +112,7 @@ fun GalleryScreen(navController: NavHostController, viewModel: GalleryViewModel)
                         ) {
                             BasicText(
                                 modifier = Modifier.padding(8.dp),
-                                text = viewModel.bucketUIState.buckets[index].displayName + "(" + viewModel.bucketUIState.buckets[index].itemCount + ")",
+                                text = viewModel.fileUIState.files[index].displayName + "(" + viewModel.fileUIState.files[index].count + ")",
                                 color = Color.White
                             )
                         }

@@ -44,9 +44,8 @@ class MainActivity : ComponentActivity() {
             composable("detail" + "/{bucketId}" + "/{displayName}" + "/{mediaType}") { navBackStack ->
                 val bucketId = navBackStack.arguments?.getString("bucketId")
                 val displayName = navBackStack.arguments?.getString("displayName")
-                val mediaType = navBackStack.arguments?.getInt("mediaType")
-                if (bucketId != null && displayName != null && mediaType != null) {
-                    DetailScreen(navController,viewModel, bucketId, displayName, mediaType)
+                if (bucketId != null && displayName != null) {
+                    DetailScreen(navController, viewModel, bucketId, displayName)
                 }
             }
         }
