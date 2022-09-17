@@ -1,6 +1,5 @@
 package com.custom.gallery.ui.screen
 
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -15,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import com.custom.gallery.ui.components.TopBar
 import com.custom.gallery.viewmodel.GalleryViewModel
@@ -25,6 +25,7 @@ import com.custom.gallery.viewmodel.GalleryViewModel
  */
 @Composable
 fun DetailScreen(
+    navController: NavHostController,
     viewModel: GalleryViewModel,
     bucketId: String,
     displayName: String,
@@ -43,7 +44,9 @@ fun DetailScreen(
 
     Scaffold(
         topBar = {
-            TopBar(displayName) {}
+            TopBar(displayName) {
+                navController.navigateUp()
+            }
         },
         scaffoldState = scaffoldState,
     ) { paddingValues ->

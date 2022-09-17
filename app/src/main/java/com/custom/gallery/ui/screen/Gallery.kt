@@ -1,4 +1,3 @@
-
 package com.custom.gallery.ui.screen
 
 import androidx.compose.foundation.Image
@@ -16,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
@@ -46,6 +46,7 @@ fun GalleryScreen(navController: NavHostController, viewModel: GalleryViewModel)
     Scaffold(
         topBar = {
             TopBar("Gallery") {
+                navController.navigateUp()
             }
         },
         scaffoldState = scaffoldState,
@@ -82,17 +83,20 @@ fun GalleryScreen(navController: NavHostController, viewModel: GalleryViewModel)
                                         )
                                 }
                         )
+                        val gradientGrayWhite =
+                            Brush.verticalGradient(0f to Color.Black, 1000f to Color.Transparent)
                         Box(
                             modifier = Modifier
                                 .wrapContentHeight()
-                                .wrapContentWidth()
+                                .fillMaxWidth()
                                 .clip(RectangleShape)
-                                .background(color = Color.Transparent),
+                                .background(gradientGrayWhite),
                             contentAlignment = Alignment.Center
                         ) {
                             BasicText(
-                                text = viewModel.bucketUIState.buckets[index].displayName,
-                                color = Color.Black
+                                modifier = Modifier.padding(8.dp),
+                                text = viewModel.bucketUIState.buckets[index].displayName + "(" + viewModel.bucketUIState.buckets[index].itemCount + ")",
+                                color = Color.White
                             )
                         }
                     }

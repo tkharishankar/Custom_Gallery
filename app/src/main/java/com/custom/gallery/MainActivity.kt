@@ -46,7 +46,7 @@ class MainActivity : ComponentActivity() {
                 val displayName = navBackStack.arguments?.getString("displayName")
                 val mediaType = navBackStack.arguments?.getInt("mediaType")
                 if (bucketId != null && displayName != null && mediaType != null) {
-                    DetailScreen(viewModel, bucketId, displayName, mediaType)
+                    DetailScreen(navController,viewModel, bucketId, displayName, mediaType)
                 }
             }
         }

@@ -10,7 +10,6 @@ data class Bucket(
     val bucketId: Long,
     val displayName: String,
     val bucketUri: Uri,
-    val mimeType: String?,
     val mediaType: Int,
     var itemCount: Int = 0,
     val id: Long = -1
