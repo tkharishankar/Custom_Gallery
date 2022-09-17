@@ -22,9 +22,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.custom.gallery.ui.components.BasicText
 import com.custom.gallery.ui.components.TopBar
 import com.custom.gallery.viewmodel.GalleryViewModel
@@ -36,10 +37,11 @@ import com.custom.gallery.viewmodel.GalleryViewModel
 @Composable
 fun GalleryScreen(navController: NavHostController, viewModel: GalleryViewModel) {
     val scaffoldState = rememberScaffoldState()
+    val context = LocalContext.current
 
     LaunchedEffect("") {
         viewModel.start()
-        viewModel.getBuckets()
+        viewModel.getBuckets(context)
     }
 
     DisposableEffect("") {
@@ -77,7 +79,7 @@ fun GalleryScreen(navController: NavHostController, viewModel: GalleryViewModel)
                             contentAlignment = Alignment.Center
                         ) {
                             Image(
-                                painter = rememberImagePainter(viewModel.fileUIState.files[index].uri),
+                                painter = rememberAsyncImagePainter(viewModel.fileUIState.files[index].uri),
                                 contentScale = ContentScale.Crop,
                                 contentDescription = null,
                                 modifier = Modifier
