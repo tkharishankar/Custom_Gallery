@@ -23,10 +23,8 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
     private val _TAG: String = "GalleryViewModel"
 
     var bucketUIState by mutableStateOf(BucketUIState())
-        private set
 
     var fileUIState by mutableStateOf(FileUIState())
-        private set
 
     fun start() {
         Log.i(_TAG, "Started...")
@@ -136,7 +134,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
                 Log.i(
                     _TAG, "item..." + Bucket(
                         fileId.toLong(), fileDisplayName,
-                        fileUri , mediaType
+                        fileUri, mediaType
                     )
                 )
                 bucketList += Bucket(
@@ -145,12 +143,27 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
                 )
             }
         }
-
+        //update the count value from hashmap to bucketlist
         bucketList.map { bucket ->
             val count = bucketHashMap[bucket.bucketId.toString()]
             bucket.itemCount = count ?: 0
         }
 
+        //add list items "all image & all video"
+        val tempList = mutableListOf<Bucket>()
+        bucketList.groupBy { it.mediaType }.forEach { entry ->
+            tempList += Bucket(
+                entry.value[0].bucketId, when (entry.key) {
+                    1 -> "All Images"
+                    3 -> "All Videos"
+                    else -> "Documents"
+                },
+                entry.value[0].bucketUri, entry.key, entry.value.sumOf { it.itemCount }
+            )
+        }
+
+        //to bring these item on top "all image & all video"
+        bucketList.addAll(0, tempList)
         bucketUIState = bucketUIState.copy(buckets = bucketList)
     }
 }
