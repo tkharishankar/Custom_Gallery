@@ -40,7 +40,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
         val files = mutableListOf<MediaFile>()
         if (bucketId == null)
             return
-        val URI = when (mediaType) {
+        val uri = when (mediaType) {
             MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE -> MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO -> MediaStore.Video.Media.EXTERNAL_CONTENT_URI
             else -> {
@@ -48,7 +48,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
             }
         }
         getApplication<Application>().contentResolver.query(
-            URI,
+            uri,
             arrayOf(
                 BaseColumns._ID,
                 MediaStore.MediaColumns.DISPLAY_NAME,
@@ -72,7 +72,7 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
                 files += MediaFile(
                     id, cursor.getString(displayNameColumnIndex),
                     ContentUris.withAppendedId(
-                        URI,
+                        uri,
                         id
                     ),
                     size,
@@ -133,16 +133,15 @@ class GalleryViewModel(application: Application) : AndroidViewModel(application)
                         id
                     )
                 }
-                val mimeType = getApplication<Application>().contentResolver.getType(fileUri)
                 Log.i(
                     _TAG, "item..." + Bucket(
                         fileId.toLong(), fileDisplayName,
-                        fileUri, mimeType, mediaType
+                        fileUri , mediaType
                     )
                 )
                 bucketList += Bucket(
                     fileId.toLong(), fileDisplayName,
-                    fileUri, mimeType, mediaType
+                    fileUri, mediaType
                 )
             }
         }
